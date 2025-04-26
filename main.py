@@ -16,6 +16,40 @@ import math
 print("\n⚔️  Welcome to Number Ninja ⚔️")
 print("Guess the secret number... or be defeated!\n")
 
+def select_difficulty():
+    """
+    Prompt the user to select a difficulty level.
+    Returns either: "easy", "medium", "hard"
+    """
+    choices = {1: "easy", 2: "medium", 3: "hard"}
+    while True:
+        print("\nChoose difficulty:")
+        print(" 1) Easy (+3 attempts)")
+        print(" 2) Medium (default)")
+        print(" 3) Hard (-2 attempts)\n")
+        choice = int(input("Enter 1, 2 or 3: "))
+        if choice in choices:
+            return choices[choice]
+        print("Invalid choice. Please select 1,2 or 3")
+
+def get_difficulty_multiplier(level):
+    if level == "easy":
+        return 3
+    elif level == "hard":
+        return -2
+    else:
+        return 0
+    
+def calculate_max_tries(lower, upper, difficulty):
+    """
+    Calculate the maximum number of tries permitted 
+    """
+    range_size = upper - lower + 1
+    base_tries = math.ceil(math.log2(range_size))
+    offset = get_difficulty_multiplier(difficulty)
+    max_tries = base_tries + offset
+    return max_tries
+
 def guess_the_number():
     while True:
         try:
@@ -29,13 +63,15 @@ def guess_the_number():
         except ValueError:
             print("Please enter valid integers.")
     
+    # Select difficulty level
+    difficulty = select_difficulty()
+
     # Generate target number
     target = random.randint(lower, upper) 
 
-    # Maximum number of tries
-    range_size = upper - lower + 1
-    max_tries = math.ceil(math.log2(range_size))
-    print(f"I have selcted a number between {lower} and {upper}.\nYou have {max_tries} attempts to guess the number.")
+    # Calculate number of tries
+    max_tries = calculate_max_tries(lower, upper, difficulty)
+    print(f"\nI have selected a number between {lower} and {upper}.\nYou have {max_tries} attempts to guess the number.\n")
 
     attempts = 0 # count tries
 
