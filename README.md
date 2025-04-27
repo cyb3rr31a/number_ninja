@@ -49,7 +49,7 @@ Try again! You guessed too high.
 
 ## 🚀 Future Features (Coming Soon)
 ✅ Difficulty levels (Easy, Medium, Hard)
-- Score tracking
+✅ Score tracking
 - High score persistence
 - Hints system
 - GUI version
