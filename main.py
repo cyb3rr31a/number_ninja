@@ -13,9 +13,6 @@ Else if the user didn't guess the integer in the minimum number of guesses. He/s
 import random
 import math
 
-print("\n⚔️  Welcome to Number Ninja ⚔️")
-print("Guess the secret number... or be defeated!\n")
-
 def select_difficulty():
     """
     Prompt the user to select a difficulty level.
@@ -50,18 +47,23 @@ def calculate_max_tries(lower, upper, difficulty):
     max_tries = base_tries + offset
     return max_tries
 
-def guess_the_number():
+def calculate_score(max_tries, attempts):
+    if attempts > max_tries:
+        return 0
+    return max(10, (max_tries - attempts) * 10)
+
+def play_game():
     while True:
         try:
             # Define the range
-            lower = int(input("Enter the lower bound of the range: "))
-            upper = int(input("Enter the higher bound of the range: "))
+            lower = int(input("Enter the lower bound: "))
+            upper = int(input("Enter the higher bound: "))
             if lower >= upper:
                 print("Lower bound must be less than upper bound. Try again!")
                 continue
             break
         except ValueError:
-            print("Please enter valid integers.")
+            print("Invalid input! Please enter valid integers.")
     
     # Select difficulty level
     difficulty = select_difficulty()
@@ -84,15 +86,34 @@ def guess_the_number():
             continue
 
         attempts += 1
-        if guess > target:
+        if guess == target:
+            score = calculate_score(max_tries, attempts)
+            print(f"🏆 Congratulations! You guessed the number in {attempts} attempt(s). You get {score} points")
+            return score
+        elif guess > target:
             print("Try again! You guessed too high\n")
         elif guess < target:
             print("Try again! You guessed too low\n")
-        else:
-            print(f"Congratulations! You guessed the number in {attempts} attempt(s).")
-            break
     else:
         print(f"Better luck next time! The number was {target}.")
+        return 0
+
+def main():
+    print("\n⚔️  Welcome to Number Ninja ⚔️")
+    print("Guess the secret number... or be defeated!\n")
+
+    high_score = 0
+
+    while True:
+        current_score = play_game()
+        if current_score > high_score:
+            high_score = current_score
+            print("🔥 New High Score!! 🔥")
+
+        play_again = input("Do you want to play again? (y/n: )").lower()
+        if play_again != 'y':
+            print("Thank you for playing Number Ninja! We will be awaiting your next arrival soldier 👋")
+            break
 
 if __name__ == "__main__":
-    guess_the_number()
+    main()
