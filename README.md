@@ -7,7 +7,7 @@
 ## 🧠 How It Works
 
 1. The user enters a **lower and upper bound**.
-2. The computer randomly selects a **secret number** within that range.
+2. The computer randomly selects a **secret number** within that range and a **difficulty level**.
 3. You guess until you get it right or run out of chances.
 4. Each guess gives feedback:
    - “Too high” 🔺
@@ -46,12 +46,10 @@ Try again! You guessed too high.
 - Clean win/lose messaging
 - Difficulty levels (Easy, Medium, Hard)
 - Score tracking
-
+- Leaderboard
 ---
 
 ## 🚀 Future Features (Coming Soon)
-- High score persistence
-- Hints system
 - GUI version
 
 ---
@@ -77,7 +75,8 @@ Try again! You guessed too high.
 ```
 number_ninja/
 ├── number_ninja.py       # Main game script
-├── README.md             # Game overview and instructions
+├── README.md            # Game overview and instructions
+├── leaderboard.txt
 ```
 
 ---
@@ -88,7 +87,8 @@ This game was built to practice control flow, loops, conditionals, and user inpu
 ---
 
 ## 📜 License
-MIT License
+![License](https://img.shields.io/github/license/cyb3rr31a/number_ninja)
+
 
 ---
 
