@@ -12,6 +12,9 @@ Else if the user didn't guess the integer in the minimum number of guesses. He/s
 # Import libraries
 import random
 import math
+import os
+
+leaderboard_file = "leaderboard.txt"
 
 def select_difficulty():
     """
@@ -20,11 +23,11 @@ def select_difficulty():
     """
     choices = {1: "easy", 2: "medium", 3: "hard"}
     while True:
-        print("\nChoose difficulty:")
-        print(" 1) Easy (+3 attempts)")
-        print(" 2) Medium (default)")
-        print(" 3) Hard (-2 attempts)\n")
-        choice = int(input("Enter 1, 2 or 3: "))
+        print("\nChoose difficulty level:")
+        print(" 1) Easy")
+        print(" 2) Medium")
+        print(" 3) Hard\n")
+        choice = int(input("Enter choice (1-3): "))
         if choice in choices:
             return choices[choice]
         print("Invalid choice. Please select 1,2 or 3")
@@ -51,6 +54,32 @@ def calculate_score(max_tries, attempts):
     if attempts > max_tries:
         return 0
     return max(10, (max_tries - attempts) * 10)
+
+def load_loaderboard():
+    leaderboard = []
+    if os.path.exists(leaderboard_file):
+        with open(leaderboard_file, "r") as file:
+            lines = file.readlines()
+            for line in lines:
+                try:
+                    name, score = line.strip().split(",")
+                    leaderboard.append((name, int(score)))
+                except ValueError:
+                    continue
+    return leaderboard
+    
+def save_leaderboard(leaderboard):
+    with open(leaderboard_file, "w") as file:
+        for name, score in leaderboard:
+            file.write(f"{name}, {score}\n")
+
+def display_leaderboard(leaderboard):
+    print("\n🏅 Leaderboard 🏅")
+    leaderboard = sorted(leaderboard, key=lambda x: x[1], reverse=True)
+    print("Top 5 player:")
+    for idx, (name, score) in enumerate(leaderboard[:5], 1):
+        print(f"{idx}. {name}: {score} points")
+    print()
 
 def play_game():
     while True:
@@ -100,19 +129,28 @@ def play_game():
 
 def main():
     print("\n⚔️  Welcome to Number Ninja ⚔️")
-    print("Guess the secret number... or be defeated!\n")
-
-    high_score = 0
+    
+    leaderboard = load_loaderboard()
+    display_leaderboard(leaderboard)
 
     while True:
         current_score = play_game()
-        if current_score > high_score:
-            high_score = current_score
-            print("🔥 New High Score!! 🔥")
+
+        if current_score > 0:
+            player_name = input("Enter your name: ")
+            leaderboard.append((player_name, current_score))
+            leaderboard = sorted(leaderboard, key=lambda x: x[1], reverse=True)
+
+            # Check for new high score
+            if current_score == leaderboard[0][1]:
+                print("🔥 New High Score!! 🔥")
+
+        display_leaderboard(leaderboard)
 
         play_again = input("Do you want to play again? (y/n: )").lower()
         if play_again != 'y':
             print("Thank you for playing Number Ninja! We will be awaiting your next arrival soldier 👋")
+            save_leaderboard(leaderboard)
             break
 
 if __name__ == "__main__":
