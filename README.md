@@ -44,12 +44,12 @@ Try again! You guessed too high.
 - Smart attempt limit using binary search
 - Friendly command-line interface
 - Clean win/lose messaging
+- Difficulty levels (Easy, Medium, Hard)
+- Score tracking
 
 ---
 
 ## 🚀 Future Features (Coming Soon)
-✅ Difficulty levels (Easy, Medium, Hard)
-✅ Score tracking
 - High score persistence
 - Hints system
 - GUI version
